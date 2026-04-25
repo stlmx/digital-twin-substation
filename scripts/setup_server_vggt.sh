@@ -17,8 +17,13 @@ export PIP_DISABLE_PIP_VERSION_CHECK=1
 echo "[setup] root: $ROOT"
 echo "[setup] HF_ENDPOINT=$HF_ENDPOINT"
 
-if [ ! -d ".venv" ]; then
-  "$PYTHON_BIN" -m venv .venv
+if [ ! -x ".venv/bin/python" ]; then
+  rm -rf .venv
+  if ! "$PYTHON_BIN" -m venv .venv; then
+    echo "[setup] python venv is unavailable; falling back to virtualenv in user site"
+    "$PYTHON_BIN" -m pip install --user virtualenv
+    "$PYTHON_BIN" -m virtualenv .venv
+  fi
 fi
 
 source .venv/bin/activate
