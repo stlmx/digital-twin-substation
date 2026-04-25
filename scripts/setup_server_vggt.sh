@@ -17,7 +17,7 @@ export PIP_DISABLE_PIP_VERSION_CHECK=1
 echo "[setup] root: $ROOT"
 echo "[setup] HF_ENDPOINT=$HF_ENDPOINT"
 
-if [ ! -x ".venv/bin/python" ]; then
+if [ ! -x ".venv/bin/python" ] || [ ! -f ".venv/bin/activate" ]; then
   rm -rf .venv
   if ! "$PYTHON_BIN" -m venv .venv; then
     echo "[setup] python venv is unavailable; falling back to virtualenv in user site"
