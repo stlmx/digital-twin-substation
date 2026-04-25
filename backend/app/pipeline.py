@@ -80,6 +80,7 @@ def _run_vggt_colmap(project_id: str, options: ReconstructionOptions) -> dict:
         settings.python_bin,
         str(demo_script),
         f"--scene_dir={project_dir(project_id)}",
+        f"--conf_thres_value={options.vggt_conf_thres_value}",
     ]
     if options.method == "vggt-colmap-ba":
         cmd.append("--use_ba")

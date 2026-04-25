@@ -21,6 +21,7 @@ class ReconstructionOptions(BaseModel):
     gpu_ids: str | None = Field(default=None, description="Example: 0 or 0,1")
     matching_method: str = Field(default="exhaustive")
     high_quality: bool = Field(default=True)
+    vggt_conf_thres_value: float = Field(default=1.0, ge=0.0)
 
 
 class ProjectMetadata(BaseModel):
