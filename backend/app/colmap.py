@@ -4,6 +4,17 @@ import struct
 from pathlib import Path
 
 
+def count_ply_vertices(path: Path) -> int:
+    with path.open("rb") as handle:
+        for raw_line in handle:
+            line = raw_line.decode("utf-8", errors="ignore").strip()
+            if line.startswith("element vertex "):
+                return int(line.split()[-1])
+            if line == "end_header":
+                break
+    return 0
+
+
 def read_points3d_binary(path: Path) -> list[tuple[float, float, float, int, int, int]]:
     points: list[tuple[float, float, float, int, int, int]] = []
     with path.open("rb") as handle:

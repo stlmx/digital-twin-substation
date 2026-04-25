@@ -226,7 +226,7 @@ async function loadPointCloud(url: string) {
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(width, height);
-  renderer.setClearColor(0x111715, 1);
+  renderer.setClearColor(0xeef2ef, 1);
   viewerElement.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -237,9 +237,9 @@ async function loadPointCloud(url: string) {
   geometry.computeBoundingSphere();
   geometry.computeVertexNormals();
   const material = new THREE.PointsMaterial({
-    size: 0.02,
+    size: 0.01,
     vertexColors: geometry.hasAttribute('color'),
-    color: geometry.hasAttribute('color') ? 0xffffff : 0xdfeae4,
+    color: geometry.hasAttribute('color') ? 0xffffff : 0x1f6f5b,
     sizeAttenuation: true
   });
   const points = new THREE.Points(geometry, material);

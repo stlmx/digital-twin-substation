@@ -6,7 +6,7 @@ import subprocess
 from pathlib import Path
 
 from .config import settings
-from .colmap import colmap_points_to_ply
+from .colmap import colmap_points_to_ply, count_ply_vertices
 from .models import ProjectStatus, ReconstructionOptions
 from .storage import (
     append_log,
@@ -95,7 +95,14 @@ def _run_vggt_colmap(project_id: str, options: ReconstructionOptions) -> dict:
         points3d_path = sparse_candidates[-1]
 
     ply_path = exports_dir(project_id) / "point_cloud" / "points.ply"
-    point_count = colmap_points_to_ply(points3d_path, ply_path)
+    native_ply = points3d_path.parent / "points.ply"
+    if native_ply.exists():
+        ply_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(native_ply, ply_path)
+        point_count = count_ply_vertices(ply_path)
+        append_log(project_id, f"Using VGGT native point cloud: {native_ply}")
+    else:
+        point_count = colmap_points_to_ply(points3d_path, ply_path)
     append_log(project_id, f"Exported point cloud: {ply_path} ({point_count} points)")
     return {
         "point_cloud_url": f"/data/projects/{project_id}/exports/point_cloud/{ply_path.name}",
