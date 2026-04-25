@@ -183,10 +183,6 @@ def run_reconstruction(project_id: str, options: ReconstructionOptions) -> None:
     save_metadata(meta)
 
     try:
-        _require_binary(settings.ns_process_data_bin)
-        _require_binary(settings.ns_train_bin)
-        _require_binary(settings.ns_export_bin)
-
         if meta.image_count < 3:
             raise RuntimeError("At least 3 images are required; 50+ is recommended.")
 

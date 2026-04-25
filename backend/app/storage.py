@@ -17,6 +17,15 @@ from .models import ProjectMetadata, ProjectSummary, ProjectStatus
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff"}
 
 
+def is_supported_image(path: Path) -> bool:
+    return (
+        path.is_file()
+        and path.suffix.lower() in IMAGE_EXTENSIONS
+        and not path.name.startswith(".")
+        and not path.name.startswith("._")
+    )
+
+
 def ensure_data_dirs() -> None:
     settings.data_dir.mkdir(parents=True, exist_ok=True)
     projects_dir().mkdir(parents=True, exist_ok=True)
@@ -81,7 +90,7 @@ def refresh_image_count(project_id: str) -> int:
     count = sum(
         1
         for path in images_dir(project_id).iterdir()
-        if path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS
+        if is_supported_image(path)
     )
     meta = load_metadata(project_id)
     meta.image_count = count
@@ -141,7 +150,7 @@ async def save_uploads(project_id: str, files: Iterable["UploadFile"]) -> int:
 
     for upload in files:
         suffix = Path(upload.filename or "").suffix.lower()
-        if suffix not in IMAGE_EXTENSIONS:
+        if suffix not in IMAGE_EXTENSIONS or Path(upload.filename or "").name.startswith("."):
             continue
         safe_name = f"{count:05d}{suffix}"
         with (destination / safe_name).open("wb") as handle:
@@ -165,7 +174,7 @@ def import_image_folder(project_id: str, source: Path, *, mode: str = "symlink")
     image_paths = [
         path
         for path in sorted(source.iterdir())
-        if path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS
+        if is_supported_image(path)
     ]
 
     for index, path in enumerate(image_paths):
