@@ -1,0 +1,14 @@
+export SUBTWIN_DATA_DIR=/data/substation-twin
+export SUBTWIN_CORS_ORIGINS=*
+export HF_ENDPOINT=https://hf-mirror.com
+export SUBTWIN_ALLOW_LOCAL_IMPORT=1
+export SUBTWIN_DEFAULT_METHOD=vggt-colmap
+export SUBTWIN_DEFAULT_ITERATIONS=30000
+export SUBTWIN_VGGT_REPO=/path/to/substation-twin/third_party/vggt
+export SUBTWIN_PYTHON_BIN=/path/to/substation-twin/.venv/bin/python
+export VGGT_MODEL_ID=facebook/VGGT-1B
+
+# Use these if your commands are not on PATH.
+# export SUBTWIN_NS_PROCESS_DATA_BIN=/opt/conda/envs/subtwin/bin/ns-process-data
+# export SUBTWIN_NS_TRAIN_BIN=/opt/conda/envs/subtwin/bin/ns-train
+# export SUBTWIN_NS_EXPORT_BIN=/opt/conda/envs/subtwin/bin/ns-export
